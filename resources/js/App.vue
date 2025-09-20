@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="panel header">
@@ -56,7 +55,7 @@ export default {
   components: { SearchBar, ResultsTableEmpresas, ExportButton },
   data () {
     return {
-      query: '',
+      query: '',   // 👈 usamos query directamente
       page: 1,
       pageSize: 100,
       total: 0,
@@ -75,45 +74,49 @@ export default {
   },
   methods: {
     async fetchResults () {
-      this.loading = true
-      this.error = ''
-      try {
-        const params = {
-          q: this.query,
-          page: this.page,
-          limit: this.pageSize
-        }
-        const { data } = await api.get('/empresas', { params })
-        if (data?.ok) {
-          this.rows = data.rows || []
-          this.total = data.total || 0
-        } else {
-          this.rows = []
-          this.total = 0
-        }
-      } catch (err) {
-        console.error(err)
-        this.error = 'No se pudieron cargar los datos.'
+    this.loading = true
+    this.error = ''
+    try {
+      const params = {
+        q: this.query,      // usamos query directo
+        page: this.page,
+        limit: this.pageSize
+      }
+      const { data } = await api.get('/empresas', { params })
+      if (data?.ok) {
+        this.rows = data.rows || []
+        this.total = data.total || 0
+      } else {
         this.rows = []
         this.total = 0
-      } finally {
-        this.loading = false
       }
-    },
-    searchNow () {
-      this.page = 1
-      this.fetchResults()
-    },
-    changePage (newPage) {
-      if (newPage === this.page) return
-      this.page = newPage
-      this.fetchResults()
-    },
-    handleLive: debounce(function (val) {
-      this.query = val
-      this.page = 1
-      this.fetchResults()
-    }, 400)
+    } catch (err) {
+      console.error(err)
+      this.error = 'No se pudieron cargar los datos.'
+      this.rows = []
+      this.total = 0
+    } finally {
+      this.loading = false
+    }
+  },
+
+  searchNow () {
+    this.page = 1
+    this.fetchResults()
+  },
+
+  changePage (newPage) {
+    if (newPage === this.page) return
+    this.page = newPage
+    this.fetchResults()
+  },
+
+  // 👇 aquí está la corrección con arrow function
+  handleLive: debounce((val) => {
+    this.query = val
+    this.page = 1
+    this.fetchResults()
+  }, 400)
   }
 }
 </script>

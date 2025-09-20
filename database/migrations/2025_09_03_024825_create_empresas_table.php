@@ -7,21 +7,31 @@ class CreateEmpresasTable extends Migration
 {
     public function up()
     {
-        Schema::create('empresas', function (Blueprint $table) {
-            $table->integer('id')->primary(); // usas el id del excel
-            $table->text('org_juridica')->nullable();
-            $table->text('categoria')->nullable();
-            $table->date('fecha_matricula')->nullable();
-            $table->text('razon_social')->nullable();
-            $table->text('tipo_identificacion')->nullable();
-            $table->text('numero_identificacion')->nullable();
-            $table->text('desc_tamano_empresa')->nullable();
-            $table->text('departamento')->nullable();
-            $table->text('municipio')->nullable();
-            $table->text('direccion_comercial')->nullable();
-            $table->text('NumeroCelular')->nullable();
-            $table->text('correo_comercial')->nullable();
-            $table->text('rep_legal')->nullable();
+
+         Schema::create('empresas', function (Blueprint $table) {
+        $table->id();
+        $table->string('razon_social');
+        $table->string('municipio');
+        $table->string('departamento');
+        $table->date('fecha_matricula');
+        $table->string('direccion'); // <-- Debe estar esta línea
+        $table->string('rep_legal');
+        $table->timestamps();
+        // Schema::create('empresas', function (Blueprint $table) {
+        //     $table->integer('id')->primary(); // usas el id del excel
+        //     $table->text('org_juridica')->nullable();
+        //     $table->text('categoria')->nullable();
+        //     $table->date('fecha_matricula')->nullable();
+        //     $table->text('razon_social')->nullable();
+        //     $table->text('tipo_identificacion')->nullable();
+        //     $table->text('numero_identificacion')->nullable();
+        //     $table->text('desc_tamano_empresa')->nullable();
+        //     $table->text('departamento')->nullable();
+        //     $table->text('municipio')->nullable();
+        //     $table->text('direccion_comercial')->nullable();
+        //     $table->text('NumeroCelular')->nullable();
+        //     $table->text('correo_comercial')->nullable();
+        //     $table->text('rep_legal')->nullable();
             // no agregamos timestamps si tu data no los tiene
         });
 

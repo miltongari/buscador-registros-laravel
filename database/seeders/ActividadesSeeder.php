@@ -9,24 +9,25 @@ class ActividadesSeeder extends Seeder
 {
     public function run()
     {
-        $actividades = [
-            'Comercio',
-            'Industria',
-            'Servicios',
-            'Tecnología',
-            'Educación',
-            'Salud',
-            'Turismo',
-            'Agricultura',
-            'Transporte',
-            'Construcción'
-        ];
-
-        foreach ($actividades as $actividad) {
-            DB::table('actividades')->insert([
-                'nombre' => $actividad,
-                'descripcion' => 'Descripción de '.$actividad
-            ]);
-        }
+        DB::table('actividades')->insert([
+            [
+                'nombre' => 'Comercio',
+                'descripcion' => 'Venta de productos en general',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nombre' => 'Tecnología',
+                'descripcion' => 'Servicios y productos de software',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nombre' => 'Agricultura',
+                'descripcion' => 'Producción agrícola y ganadera',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

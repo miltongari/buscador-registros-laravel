@@ -1,0 +1,60 @@
+buscador-registros-laravel/
+├── app/
+│   ├── Console/
+│   ├── Exceptions/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   └── BuscadorController.php: 
+│   │   ├── Middleware/
+│   │   └── Kernel.php
+│   ├── Models/
+│   │   └── Registro.php
+│   └── Providers/
+├── bootstrap/
+│   └── app.php
+├── config/
+│   ├── app.php
+│   ├── database.php
+│   └── services.php
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   │   └── 2023_01_01_000000_create_registros_table.php
+│   └── seeders/
+│       └── DatabaseSeeder.php
+├── public/
+│   ├── css/
+│   │   └── app.css
+│   ├── js/
+│   │   └── app.js
+│   └── index.php
+├── resources/
+│   ├── js/
+│   ├── lang/
+│   ├── sass/
+│   └── views/
+│       ├── layouts/
+│       │   └── app.blade.php
+│       └── registros/
+│           ├── index.blade.php
+│           └── buscar.blade.php
+├── routes/
+│   ├── api.php
+│   ├── channels.php
+│   ├── console.php
+│   └── web.php
+├── storage/
+├── tests/
+│   └── Unit/
+│       └── BusquedaTest.php
+├── vendor/
+├── .env
+├── .env.example
+├── .gitattributes
+├── .gitignore
+├── artisan
+├── composer.json
+├── composer.lock
+├── package.json
+├── phpunit.xml
+└── README.md

@@ -14,13 +14,13 @@ class EmpresaActividadSeeder extends Seeder
 
         foreach ($empresas as $empresa_id) {
             // Cada empresa tendrá entre 1 y 3 actividades
-            $asignadas = $actividades->random(rand(1,3));
+            $asignadas = $actividades->random(rand(1,3))->unique();
 
             foreach ($asignadas as $actividad_id) {
-                DB::table('empresa_actividad')->insert([
+                DB::table('empresa_actividad')->updateOrInsert([
                     'empresa_id' => $empresa_id,
                     'actividad_id' => $actividad_id
-                ]);
+                ], []);
             }
         }
     }
