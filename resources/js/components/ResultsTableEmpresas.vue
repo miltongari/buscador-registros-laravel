@@ -29,7 +29,7 @@
             <td>{{ r.departamento }}</td>
             <td>{{ r.actividades }}</td>
             <td>{{ formatDate(r.fecha_matricula) }}</td>
-            <td>{{ r.direccion_comercial }}</td>
+            <td>{{ r.direccion }}</td>
             <td>{{ r.rep_legal }}</td>
           </tr>
         </tbody>

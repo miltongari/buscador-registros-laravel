@@ -1,8 +1,8 @@
-
-export default function debounce (fn, delay = 300) {
+export default function debounce(fn, delay = 300) {
   let t = null
-  return (...args) => {
+  return function (...args) {
+    const context = this
     clearTimeout(t)
-    t = setTimeout(() => fn(...args), delay)
+    t = setTimeout(() => fn.apply(context, args), delay)
   }
 }

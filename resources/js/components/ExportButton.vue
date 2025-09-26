@@ -27,7 +27,9 @@ export default {
           Municipio: r.municipio,
           Departamento: r.departamento,
           Actividades: r.actividades,
-          "Dirección comercial": r.direccion_comercial,
+          "Dirección": r.direccion,
+
+          // "Dirección comercial": r.direccion_comercial,
           "Fecha matrícula": r.fecha_matricula
             ? new Date(r.fecha_matricula).toLocaleDateString()
             : "",
