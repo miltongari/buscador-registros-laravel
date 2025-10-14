@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="panel header">
-      <h1 style="text-align: center; font-size: 60px;">🔍Buscador De Registros🔍</h1>
+      <h1 style="text-align: center; font-size: 60px;">🔍 Buscador De Registros 🔍</h1>
     </div>
 
     <div class="grid">
@@ -9,12 +9,32 @@
       <div class="panel col">
         <SearchBar
           :modelValue="query"
-          :loading="loading" 
+          :loading="loading"
           @update:modelValue="val => query = val"
           @search="searchNow"
           @live="handleLive"
         />
 
+        <!-- 🔹 Filtros por Departamento y Municipio -->
+        <div class="row" style="flex-direction: column; gap: .5rem; margin-top: 1rem;">
+          <div>
+            <label class="muted">Departamento</label>
+            <select class="input" v-model="departamento" @change="onFilterChange">
+              <option value="">Todos</option>
+              <option v-for="d in departamentos" :key="d" :value="d">{{ d }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="muted">Municipio</label>
+            <select class="input" v-model="municipio" @change="onFilterChange">
+              <option value="">Todos</option>
+              <option v-for="m in municipiosFiltrados" :key="m" :value="m">{{ m }}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Paginación y botones -->
         <div class="row" style="gap: .5rem; align-items:center; margin-top: .5rem;">
           <label class="muted">Resultados por página</label>
           <select class="input" v-model.number="pageSize" @change="searchNow">
@@ -27,6 +47,7 @@
         </div>
 
         <ExportButton :rows="rows" />
+        <ImportButton @imported="onImportSuccess" />
       </div>
 
       <!-- Columna derecha: resultados -->
@@ -51,11 +72,12 @@ import api from './services/api'
 import SearchBar from './components/SearchBar.vue'
 import ResultsTableEmpresas from './components/ResultsTableEmpresas.vue'
 import ExportButton from './components/ExportButton.vue'
+import ImportButton from './components/ImportButton.vue'
 
 export default {
   name: 'App',
-  components: { SearchBar, ResultsTableEmpresas, ExportButton },
-  data () {
+  components: { SearchBar, ResultsTableEmpresas, ExportButton, ImportButton },
+  data() {
     return {
       query: '',
       page: 1,
@@ -63,27 +85,41 @@ export default {
       total: 0,
       rows: [],
       loading: false,
-      error: ''
+      error: '',
+
+      // 🔹 Nuevos filtros
+      departamento: '',
+      municipio: '',
+      departamentos: ['Antioquia', 'Cundinamarca', 'Valle del Cauca'],
+      municipios: {
+        Antioquia: ['Medellín', 'Bello', 'Itagüí'],
+        Cundinamarca: ['Bogotá', 'Soacha'],
+        'Valle del Cauca': ['Cali', 'Palmira'],
+      },
     }
-  },
-  created () {
-    // Llamada inicial
-    this.searchNow()
   },
   computed: {
-    totalPages () {
+    totalPages() {
       return Math.max(1, Math.ceil(this.total / this.pageSize))
+    },
+    municipiosFiltrados() {
+      return this.municipios[this.departamento] || []
     }
   },
+  created() {
+    this.searchNow()
+  },
   methods: {
-    async fetchResults () {
+    async fetchResults() {
       this.loading = true
       this.error = ''
       try {
         const params = {
           q: this.query,
           page: this.page,
-          limit: this.pageSize
+          limit: this.pageSize,
+          departamento: this.departamento || '',
+          municipio: this.municipio || ''
         }
         const { data } = await api.get('/empresas', { params })
         if (data?.ok) {
@@ -103,23 +139,32 @@ export default {
       }
     },
 
-    searchNow () {
+    onFilterChange() {
       this.page = 1
       this.fetchResults()
     },
 
-    changePage (newPage) {
+    searchNow() {
+      this.page = 1
+      this.fetchResults()
+    },
+
+    changePage(newPage) {
       if (newPage === this.page) return
       this.page = newPage
       this.fetchResults()
     },
 
-    // 👇 aquí el fix con function normal (mantiene el this de Vue)
     handleLive: debounce(function (val) {
       this.query = val
       this.page = 1
       this.fetchResults()
-    }, 400)
+    }, 400),
+
+    onImportSuccess(newData) {
+      this.rows = newData
+      this.total = newData.length
+    }
   }
 }
 </script>

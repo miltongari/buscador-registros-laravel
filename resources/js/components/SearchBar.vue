@@ -10,7 +10,6 @@
         @keyup.enter="emitSearch"
         placeholder="Ej. ID, Razón social, Actividades...."
       />
-      <!-- 🔄 Spinner cuando está cargando -->
       <span v-if="loading" class="spinner"></span>
     </div>
 
@@ -35,21 +34,21 @@ export default {
   name: 'SearchBar',
   props: {
     modelValue: { type: String, default: '' },
-    loading: { type: Boolean, default: false } // 👈 ya teníamos este prop
+    loading: { type: Boolean, default: false }
   },
   emits: ['update:modelValue', 'search', 'live'],
   methods: {
-    onInput (e) {
+    onInput(e) {
       const val = e.target.value
       this.$emit('update:modelValue', val)
-      this.$emit('live', val) // búsqueda en vivo
+      this.$emit('live', val)
     },
-    emitSearch () {
+    emitSearch() {
       this.$emit('search')
     },
-    clear () {
+    clear() {
       this.$emit('update:modelValue', '')
-      this.$emit('live', '') // búsqueda vacía
+      this.$emit('live', '')
     }
   }
 }
@@ -61,12 +60,10 @@ export default {
   display: flex;
   align-items: center;
 }
-
 .input-wrapper .input {
   width: 100%;
-  padding-right: 2rem; /* espacio para el spinner */
+  padding-right: 2rem;
 }
-
 .spinner {
   position: absolute;
   right: 0.5rem;
@@ -77,7 +74,6 @@ export default {
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
-
 .btn-spinner {
   display: inline-block;
   width: 1rem;
@@ -89,7 +85,6 @@ export default {
   animation: spin 0.6s linear infinite;
   vertical-align: middle;
 }
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
