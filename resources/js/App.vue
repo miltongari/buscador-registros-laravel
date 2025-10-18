@@ -47,7 +47,6 @@
         </div>
 
         <ExportButton :rows="rows" />
-        <ImportButton @imported="onImportSuccess" />
       </div>
 
       <!-- Columna derecha: resultados -->
@@ -72,11 +71,10 @@ import api from './services/api'
 import SearchBar from './components/SearchBar.vue'
 import ResultsTableEmpresas from './components/ResultsTableEmpresas.vue'
 import ExportButton from './components/ExportButton.vue'
-import ImportButton from './components/ImportButton.vue'
 
 export default {
   name: 'App',
-  components: { SearchBar, ResultsTableEmpresas, ExportButton, ImportButton },
+  components: { SearchBar, ResultsTableEmpresas, ExportButton },
   data() {
     return {
       query: '',
@@ -87,15 +85,11 @@ export default {
       loading: false,
       error: '',
 
-      // 🔹 Nuevos filtros
+      // 🔹 Filtros dinámicos
       departamento: '',
       municipio: '',
-      departamentos: ['Antioquia', 'Cundinamarca', 'Valle del Cauca'],
-      municipios: {
-        Antioquia: ['Medellín', 'Bello', 'Itagüí'],
-        Cundinamarca: ['Bogotá', 'Soacha'],
-        'Valle del Cauca': ['Cali', 'Palmira'],
-      },
+      departamentos: [],
+      municipios: {},
     }
   },
   computed: {
@@ -110,6 +104,10 @@ export default {
     this.searchNow()
   },
   methods: {
+    /**
+     * 🔹 Cargar resultados desde el backend
+     * y actualizar los filtros automáticamente.
+     */
     async fetchResults() {
       this.loading = true
       this.error = ''
@@ -121,10 +119,15 @@ export default {
           departamento: this.departamento || '',
           municipio: this.municipio || ''
         }
+
         const { data } = await api.get('/empresas', { params })
+
         if (data?.ok) {
           this.rows = data.rows || []
           this.total = data.total || 0
+
+          // 🔹 Actualizar filtros dinámicamente cada vez que cambia la data
+          this.actualizarFiltros(data.rows)
         } else {
           this.rows = []
           this.total = 0
@@ -137,6 +140,34 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    /**
+     * 🔹 Genera listas únicas de departamentos y municipios
+     * a partir de los datos obtenidos.
+     */
+    actualizarFiltros(rows) {
+      if (!Array.isArray(rows) || rows.length === 0) return
+
+      const departamentosSet = new Set()
+      const municipiosMap = {}
+
+      rows.forEach(r => {
+        if (r.departamento) {
+          departamentosSet.add(r.departamento)
+          if (r.municipio) {
+            if (!municipiosMap[r.departamento]) municipiosMap[r.departamento] = new Set()
+            municipiosMap[r.departamento].add(r.municipio)
+          }
+        }
+      })
+
+      this.departamentos = Array.from(departamentosSet)
+      const municipiosFinal = {}
+      for (const dep in municipiosMap) {
+        municipiosFinal[dep] = Array.from(municipiosMap[dep])
+      }
+      this.municipios = municipiosFinal
     },
 
     onFilterChange() {
@@ -160,11 +191,6 @@ export default {
       this.page = 1
       this.fetchResults()
     }, 400),
-
-    onImportSuccess(newData) {
-      this.rows = newData
-      this.total = newData.length
-    }
   }
 }
 </script>
