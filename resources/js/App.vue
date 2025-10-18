@@ -5,7 +5,7 @@
     </div>
 
     <div class="grid">
-      <!-- Columna izquierda: filtros y acciones -->
+      <!-- Columna izquierda: filtros -->
       <div class="panel col">
         <SearchBar
           :modelValue="query"
@@ -15,7 +15,7 @@
           @live="handleLive"
         />
 
-        <!-- 🔹 Filtros por Departamento y Municipio -->
+        <!-- 🔹 Filtros -->
         <div class="row" style="flex-direction: column; gap: .5rem; margin-top: 1rem;">
           <div>
             <label class="muted">Departamento</label>
@@ -34,7 +34,7 @@
           </div>
         </div>
 
-        <!-- Paginación y botones -->
+        <!-- Configuración -->
         <div class="row" style="gap: .5rem; align-items:center; margin-top: .5rem;">
           <label class="muted">Resultados por página</label>
           <select class="input" v-model.number="pageSize" @change="searchNow">
@@ -46,20 +46,19 @@
           </select>
         </div>
 
-        <ExportButton :rows="rows" />
+        <ExportButton :rows="filteredRows" />
       </div>
 
-      <!-- Columna derecha: resultados -->
+      <!-- Columna derecha -->
       <div class="panel">
-        <ResultsTableEmpresas :rows="rows" :loading="loading" :error="error" />
+        <ResultsTableEmpresas :rows="filteredRows" :loading="loading" :error="error" />
 
-        <!-- Paginación -->
         <div class="row" style="justify-content: center; gap: .5rem; margin-top: .5rem;">
           <button class="btn" :disabled="page === 1 || loading" @click="changePage(page - 1)">«</button>
           <span>Página {{ page }} de {{ totalPages }}</span>
           <button class="btn" :disabled="page === totalPages || loading" @click="changePage(page + 1)">»</button>
         </div>
-        <small class="muted">{{ total }} resultados</small>
+        <small class="muted">{{ filteredRows.length }} resultados</small>
       </div>
     </div>
   </div>
@@ -85,7 +84,6 @@ export default {
       loading: false,
       error: '',
 
-      // 🔹 Filtros dinámicos
       departamento: '',
       municipio: '',
       departamentos: [],
@@ -98,16 +96,23 @@ export default {
     },
     municipiosFiltrados() {
       return this.municipios[this.departamento] || []
+    },
+
+    /**
+     * 🔹 Filtra los resultados en tiempo real según los filtros activos.
+     */
+    filteredRows() {
+      return this.rows.filter(r => {
+        const matchDepartamento = this.departamento ? r.departamento === this.departamento : true
+        const matchMunicipio = this.municipio ? r.municipio === this.municipio : true
+        return matchDepartamento && matchMunicipio
+      })
     }
   },
   created() {
     this.searchNow()
   },
   methods: {
-    /**
-     * 🔹 Cargar resultados desde el backend
-     * y actualizar los filtros automáticamente.
-     */
     async fetchResults() {
       this.loading = true
       this.error = ''
@@ -115,18 +120,12 @@ export default {
         const params = {
           q: this.query,
           page: this.page,
-          limit: this.pageSize,
-          departamento: this.departamento || '',
-          municipio: this.municipio || ''
+          limit: this.pageSize
         }
-
         const { data } = await api.get('/empresas', { params })
-
         if (data?.ok) {
           this.rows = data.rows || []
           this.total = data.total || 0
-
-          // 🔹 Actualizar filtros dinámicamente cada vez que cambia la data
           this.actualizarFiltros(data.rows)
         } else {
           this.rows = []
@@ -143,8 +142,7 @@ export default {
     },
 
     /**
-     * 🔹 Genera listas únicas de departamentos y municipios
-     * a partir de los datos obtenidos.
+     * 🔹 Generar listas únicas de departamentos y municipios.
      */
     actualizarFiltros(rows) {
       if (!Array.isArray(rows) || rows.length === 0) return
@@ -171,8 +169,8 @@ export default {
     },
 
     onFilterChange() {
+      // solo actualiza la vista filtrada
       this.page = 1
-      this.fetchResults()
     },
 
     searchNow() {
