@@ -1,0 +1,75 @@
+/* Estilos minimalistas - Sin animaciones */
+.app.theme-profesional-minimal .cyber-header {
+  border-bottom: 2px solid var(--accent);
+  box-shadow: 0 2px 10px var(--shadow);
+  animation: none; /* Desactiva animaciones */
+}
+
+.app.theme-profesional-minimal .header-glitch {
+  animation: none; /* Sin efecto glitch */
+  text-shadow: none; /* Sin sombras de texto */
+  color: var(--accent);
+}
+
+.app.theme-profesional-minimal .header-glitch::before,
+.app.theme-profesional-minimal .header-glitch::after {
+  display: none; /* Oculta efectos glitch */
+}
+
+.app.theme-profesional-minimal .cyber-panel::before {
+  animation: none; /* Sin scanline animada */
+  background: var(--accent); /* Línea estática */
+  height: 1px;
+}
+
+.app.theme-profesional-minimal .cyber-button:hover:not(:disabled) {
+  transform: none; /* Sin movimiento en hover */
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.app.theme-profesional-minimal .btn-glitch::before {
+  animation: none; /* Sin efecto glitch en botones */
+  display: none;
+}
+
+.app.theme-profesional-minimal .cyber-table tbody tr:hover {
+  transform: none; /* Sin movimiento en filas */
+  background: rgba(47, 129, 247, 0.05);
+}
+
+.app.theme-profesional-minimal .loading-spinner {
+  animation: none; /* Spinner estático */
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--accent);
+}
+
+.app.theme-profesional-minimal .loading-text {
+  animation: none; /* Texto sin parpadeo */
+}
+
+/* Mejoras de legibilidad */
+.app.theme-profesional-minimal .cyber-table {
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+}
+
+.app.theme-profesional-minimal .cyber-table th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent);
+}
+
+.app.theme-profesional-minimal .cyber-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem;
+}
+
+.app.theme-profesional-minimal .cyber-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.app.theme-profesional-minimal .stat-value {
+  text-shadow: none;
+  font-weight: 700;
+}

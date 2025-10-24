@@ -1,23 +1,23 @@
 <template>
   <div class="col">
-    <label class="muted">Buscar</label>
+    <label class="cyber-label">Buscar empresas</label>
     <div class="input-wrapper">
       <input
-        class="input"
+        class="cyber-input"
         type="text"
         :value="modelValue"
         @input="onInput"
         @keyup.enter="emitSearch"
-        placeholder="Ej. ID, Razón social, Actividades...."
+        placeholder="Ej: Comercio, Tecnología, Agricultura..."
       />
       <span v-if="loading" class="spinner"></span>
     </div>
 
-    <div class="row" style="justify-content: flex-end; gap: .5rem;">
-      <button class="btn ghost" @click="clear" :disabled="loading">
+    <div class="row" style="justify-content: flex-end; gap: .5rem; margin-top: 1rem;">
+      <button class="cyber-button ghost" @click="clear" :disabled="loading">
         Limpiar
       </button>
-      <button class="btn primary" @click="emitSearch" :disabled="loading">
+      <button class="cyber-button primary" @click="emitSearch" :disabled="loading">
         <template v-if="loading">
           <span class="btn-spinner"></span> Buscando...
         </template>
@@ -43,9 +43,11 @@ export default {
       this.$emit('update:modelValue', val)
       this.$emit('live', val)
     },
+    
     emitSearch() {
       this.$emit('search')
     },
+    
     clear() {
       this.$emit('update:modelValue', '')
       this.$emit('live', '')
@@ -60,20 +62,18 @@ export default {
   display: flex;
   align-items: center;
 }
-.input-wrapper .input {
-  width: 100%;
-  padding-right: 2rem;
-}
+
 .spinner {
   position: absolute;
-  right: 0.5rem;
+  right: 1rem;
   width: 1rem;
   height: 1rem;
-  border: 2px solid #ccc;
-  border-top-color: #007bff;
+  border: 2px solid var(--text-muted);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
+
 .btn-spinner {
   display: inline-block;
   width: 1rem;
@@ -85,9 +85,21 @@ export default {
   animation: spin 0.6s linear infinite;
   vertical-align: middle;
 }
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
+}
+
+.cyber-button.ghost {
+  background: transparent;
+  border-color: var(--border);
+}
+
+.cyber-button.primary {
+  background: var(--accent);
+  color: var(--bg-primary);
+  border-color: var(--accent);
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
   <button
-    class="btn secondary"
+    class="cyber-button"
     @click="exportExcel"
     :disabled="!rows?.length"
     title="Exportar resultados a Excel"
   >
-    📄 Exportar a Excel
+    <span class="btn-glitch" data-text="EXPORTAR">EXPORTAR</span>
   </button>
 </template>
 
@@ -16,10 +16,14 @@ export default {
   name: "ExportButton",
   props: {
     rows: { type: Array, default: () => [] },
+    filename: { type: String, default: '' }
   },
   methods: {
     exportExcel() {
-      if (!this.rows.length) return;
+      if (!this.rows.length) {
+        alert("No hay datos para exportar");
+        return;
+      }
 
       try {
         const normalized = this.rows.map((r) => ({
@@ -46,11 +50,11 @@ export default {
 
         const fecha = new Date();
         const timestamp = fecha.toISOString().split("T")[0];
-        const fileName = `empresas_${timestamp}.xlsx`;
+        const fileName = this.filename || `empresas_${timestamp}.xlsx`;
 
         XLSX.writeFile(wb, fileName);
       } catch (err) {
-        console.error("❌ Error exportando Excel:", err);
+        console.error("Error exportando Excel:", err);
         this.$emit("error", err);
         alert("Hubo un problema al exportar el archivo Excel.");
       }
@@ -60,8 +64,7 @@ export default {
 </script>
 
 <style scoped>
-button[disabled] {
-  opacity: 0.6;
-  cursor: not-allowed;
+.cyber-export {
+  width: 100%;
 }
 </style>

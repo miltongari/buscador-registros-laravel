@@ -12,7 +12,7 @@ class EmpresasController extends Controller
     {
         $query = Empresa::with('actividades');
 
-        // 🔍 Filtro de búsqueda
+        // Filtro de búsqueda
         if ($request->has('q') && !empty($request->q)) {
             $q = $request->q;
             $query->where(function ($sub) use ($q) {
@@ -20,21 +20,28 @@ class EmpresasController extends Controller
                     ->orWhere('municipio', 'ILIKE', "%$q%")
                     ->orWhere('departamento', 'ILIKE', "%$q%")
                     ->orWhere('direccion', 'ILIKE', "%$q%")
-                    ->orWhere('rep_legal', 'ILIKE', "%$q%");
+                    ->orWhere('rep_legal', 'ILIKE', "%$q%")
+                    // Buscar en fecha de matrícula (como texto)
+                    ->orWhere('fecha_matricula', 'ILIKE', "%$q%")
+                    // Buscar en actividades relacionadas
+                    ->orWhereHas('actividades', function ($actividadQuery) use ($q) {
+                        $actividadQuery->where('nombre', 'ILIKE', "%$q%")
+                                      ->orWhere('descripcion', 'ILIKE', "%$q%");
+                    });
             });
         }
 
-        // 📄 Paginación
+        // Paginación
         $limit = $request->input('limit', 20);
         $empresas = $query->paginate($limit);
 
-        // ✅ Respuesta en el formato que espera App.vue
+        // Respuesta en el formato que espera App.vue
         return response()->json([
             'ok' => true,
-            'rows' => $empresas->items(),       // registros actuales
-            'total' => $empresas->total(),      // total de resultados
-            'page' => $empresas->currentPage(), // página actual
-            'totalPages' => $empresas->lastPage(), // total de páginas
+            'rows' => $empresas->items(),
+            'total' => $empresas->total(),
+            'page' => $empresas->currentPage(),
+            'totalPages' => $empresas->lastPage(),
         ]);
     }
 }

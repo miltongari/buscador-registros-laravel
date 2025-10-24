@@ -1,4 +1,8 @@
 @import 'tailwindcss';
+@import './themes/cyberpunk.css';
+@import './components/cyberpunk.css';
+@import './components/minimal.css'; 
+@import './animations/cyberpunk.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -8,4 +12,43 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Estilos base que se aplican a toda la aplicación */
+.app {
+  min-height: 100vh;
+  font-family: 'Courier New', 'SF Mono', Monaco, monospace;
+  position: relative;
+  overflow-x: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .cyber-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .header-glitch {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-header {
+    padding: 1rem;
+  }
+  
+  .cyber-grid {
+    padding: 0 1rem 1rem;
+  }
+  
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cyber-stats {
+    grid-template-columns: 1fr;
+  }
 }

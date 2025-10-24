@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="table-wrapper" v-if="!error">
-      <table>
+      <table class="cyber-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -15,10 +15,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loading">
+          <tr v-if="loading" class="loading-row">
             <td colspan="8">Cargando resultados...</td>
           </tr>
-          <tr v-else-if="rows.length === 0">
+          <tr v-else-if="rows.length === 0" class="empty-row">
             <td colspan="8">Sin resultados</td>
           </tr>
           <tr v-else v-for="r in rows" :key="r.id">
@@ -63,3 +63,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.table-wrapper {
+  width: 100%;
+  overflow: auto;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.error {
+  color: var(--error);
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  border: 1px solid var(--error);
+}
+</style>

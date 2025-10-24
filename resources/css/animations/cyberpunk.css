@@ -1,0 +1,248 @@
+/* Animaciones Cyberpunk */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-1 {
+  0%, 100% { transform: translate(0); opacity: 0.7; }
+  10% { transform: translate(-2px, -2px); }
+  20% { transform: translate(-2px, 2px); }
+  30% { transform: translate(2px, -2px); }
+  40% { transform: translate(2px, 2px); }
+  50% { transform: translate(-2px, -2px); }
+  60% { transform: translate(-2px, 2px); }
+  70% { transform: translate(2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  90% { transform: translate(-2px, -2px); }
+}
+
+@keyframes glitch-2 {
+  0%, 100% { transform: translate(0); opacity: 0.7; }
+  10% { transform: translate(2px, 2px); }
+  20% { transform: translate(2px, -2px); }
+  30% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  50% { transform: translate(2px, 2px); }
+  60% { transform: translate(2px, -2px); }
+  70% { transform: translate(-2px, 2px); }
+  80% { transform: translate(-2px, -2px); }
+  90% { transform: translate(2px, 2px); }
+}
+
+@keyframes glitch-btn {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Animación de borde rotatorio - Versión mejorada */
+@keyframes rotate-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes border-glow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.8;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+/* Animación de escaneo completo alrededor del panel */
+@keyframes full-border-scan {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  25% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  50% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  75% {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  }
+}
+
+/* Animación de puntos recorriendo el borde */
+@keyframes dot-scan {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(100%) translateY(0);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%);
+  }
+  75% {
+    transform: translateX(0) translateY(100%);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* Animación de líneas independientes para cada lado */
+@keyframes scan-top {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes scan-right {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes scan-bottom {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes scan-left {
+  0% { transform: translateY(100%); }
+  100% { transform: translateY(-100%); }
+}
+
+/* Animación de gradiente rotatorio suave */
+@keyframes conic-rotate {
+  0% {
+    background: conic-gradient(
+      from 0deg,
+      var(--accent),
+      var(--success),
+      var(--warning),
+      var(--error),
+      var(--accent)
+    );
+  }
+  100% {
+    background: conic-gradient(
+      from 360deg,
+      var(--accent),
+      var(--success),
+      var(--warning),
+      var(--error),
+      var(--accent)
+    );
+  }
+}
+
+/* Animación de neón pulsante para bordes */
+@keyframes neon-pulse-border {
+  0%, 100% {
+    box-shadow: 
+      0 0 5px var(--accent-glow),
+      inset 0 0 5px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px var(--accent-glow),
+      inset 0 0 10px var(--accent-glow),
+      0 0 30px var(--accent-glow);
+  }
+}
+
+/* Animación de carga tipo radar */
+@keyframes radar-scan {
+  0% {
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+
+/* Clases utilitarias para animaciones */
+.border-animation {
+  position: absolute;
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.border-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  animation-name: scan-top;
+}
+
+.border-right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  animation-name: scan-right;
+}
+
+.border-bottom {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  animation-name: scan-bottom;
+}
+
+.border-left {
+  bottom: 0;
+  left: 0;
+  top: 0;
+  width: 2px;
+  animation-name: scan-left;
+}
+
+/* Animación específica para el tema Cyberpunk 2077 */
+@keyframes cyberpunk-border {
+  0% {
+    border-image: linear-gradient(0deg, #ff2a6d, #00ff9f, #05d9e8, #ff2a6d) 1;
+  }
+  25% {
+    border-image: linear-gradient(90deg, #ff2a6d, #00ff9f, #05d9e8, #ff2a6d) 1;
+  }
+  50% {
+    border-image: linear-gradient(180deg, #ff2a6d, #00ff9f, #05d9e8, #ff2a6d) 1;
+  }
+  75% {
+    border-image: linear-gradient(270deg, #ff2a6d, #00ff9f, #05d9e8, #ff2a6d) 1;
+  }
+  100% {
+    border-image: linear-gradient(360deg, #ff2a6d, #00ff9f, #05d9e8, #ff2a6d) 1;
+  }
+}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Buscador</title>
-    @vite('resources/js/main.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js']) <!-- ✅ Cambia esto -->
 </head>
 <body>
     <div id="app"></div>
